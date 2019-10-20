@@ -96,7 +96,7 @@
       console.log("test");
       var res = JSON.parse(this.response);
       aqi1 = res['data']['indexes']['baqi']['aqi'];
-      //console.log(aqi);
+      console.log(aqi1);
      
       }
       request.send();
@@ -107,7 +107,7 @@
       console.log("test");
       var res = JSON.parse(this.response);
       aqi2 = res['data']['indexes']['baqi']['aqi'];
-      //console.log(aqi);
+      console.log(aqi2);
      
       }
       request.send();
@@ -118,7 +118,7 @@
       console.log("test");
       var res = JSON.parse(this.response);
       aqi3 = res['data']['indexes']['baqi']['aqi'];
-      //console.log(aqi);
+      console.log(aqi3);
      
       }
       request.send();
@@ -128,11 +128,11 @@
         alert("no change in pollution level");
       }
 
-      else if(aqi1 > aqi2 || aqi2 > aqi3){
-        playVideo2();
+      else if(aqi2 > aqi3){
+        playVideo();
       }
 
-      else playVideo();
+      else playVideo2();
 
 
 
