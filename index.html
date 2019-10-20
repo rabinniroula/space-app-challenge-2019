@@ -50,22 +50,25 @@
       //lat lng data
       var request = new XMLHttpRequest();
 
-      request.open('GET', 'https://us1.locationiq.com/v1/search.php?key=9b3b59a233e9ee&q=' + place + '&format=json', true);
+      var lat, lng;
+
+      request.open('GET', 'https://us1.locationiq.com/v1/search.php?key=9b3b59a233e9ee&q=' + place + '&format=json', false);
       request.onload = function() {
         // Convert JSON data to an object
         console.log("test");
         var latlng = JSON.parse(this.response);
         console.log("hello");
-        var lat = latlng[0].lat;
-        var lng = latlng[0].lng;
+        lat = latlng[0].lat;
+        lng = latlng[0].lon;
+        console.log('in lat lng');
         console.log(lat);
         console.log(lng);
       }
       request.send();
 
 
-      // aqi
-      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=" + loc.latitude + "&lon=" + loc.longitude + &key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-17T04:00:00', true);
+      //aqi
+      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=' + lat + "&lon=" + lng + '&key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-17T04:00:00', false);
       request.onload = function () {
       // Convert JSON data to an object
       console.log("test");
