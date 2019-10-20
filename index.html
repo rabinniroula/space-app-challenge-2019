@@ -5,6 +5,16 @@
   <title></title>
   <meta charset="utf-8" />
 
+  <video id="myVid" width="400" height="200">
+    <source src="My Video.mp4" type="video/mp4">
+     Sorry, your browser does not support HTML5 video.
+   </video>
+
+   <video id="myVid2" width="400" height="200">
+    <source src="My Video1.mp4" type="video/mp4">
+     Sorry, your browser does not support HTML5 video.
+   </video>
+
   <!-- Reference to the Bing Maps SDK -->
   <script type='text/javascript'
     src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AnsS3zdh-kQirgTAW76jC85GfOqnvO5hUwm1RTy7IGyCLuwAdgoOCe7ik0rHbCGI'
@@ -12,6 +22,17 @@
 
   <script type='text/javascript'>
     var map = null;
+
+
+    var happyVideo = document.getElementById("myVid");
+    var sadVideo = document.getElementById("myVid2");
+
+    function playVideo() { 
+      happyVideo.play(); 
+    } 
+    function playVideo2() { 
+      sadVideo.play(); 
+    } 
 
     function GetMap() {
       // Initialize the map
@@ -66,18 +87,52 @@
       }
       request.send();
 
+      var aqi1, aqi2, aqi3;
 
-      //aqi
-      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=' + lat + "&lon=" + lng + '&key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-17T04:00:00', false);
+      //aqi latest
+      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=' + lat + "&lon=" + lng + '&key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-20T04:00:00', false);
       request.onload = function () {
       // Convert JSON data to an object
       console.log("test");
       var res = JSON.parse(this.response);
-      var aqi = res['data']['indexes']['baqi']['aqi'];
-      console.log(aqi);
+      aqi1 = res['data']['indexes']['baqi']['aqi'];
+      //console.log(aqi);
      
       }
       request.send();
+
+      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=' + lat + "&lon=" + lng + '&key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-19T04:00:00', false);
+      request.onload = function () {
+      // Convert JSON data to an object
+      console.log("test");
+      var res = JSON.parse(this.response);
+      aqi2 = res['data']['indexes']['baqi']['aqi'];
+      //console.log(aqi);
+     
+      }
+      request.send();
+
+      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=' + lat + "&lon=" + lng + '&key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-18T04:00:00', false);
+      request.onload = function () {
+      // Convert JSON data to an object
+      console.log("test");
+      var res = JSON.parse(this.response);
+      aqi3 = res['data']['indexes']['baqi']['aqi'];
+      //console.log(aqi);
+     
+      }
+      request.send();
+
+
+      if (aqi1 == aqi2 || aqi2 == aqi3 || aqi1 == aqi3){
+        alert("no change in pollution level");
+      }
+
+      else if(aqi1 > aqi2 || aqi2 > aqi3){
+        playVideo2();
+      }
+
+      else playVideo();
 
 
 
