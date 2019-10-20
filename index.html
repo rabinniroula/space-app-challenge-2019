@@ -48,14 +48,18 @@
       // let request = new XMLHttpRequest();
       
       //lat lng data
-      request.open('GET', 'https://api.opencagedata.com/geocode/v1/json?q=" + place + &key=67fed7bfbb4b477a8cac862f176e2bb0', true);
-      request.onload = function () {
-      // Convert JSON data to an object
-      console.log("test");
-      var latlng = JSON.parse(this.response);
-      var lat = latlng['results']['bounds']['northeast']['lat'];
-      console.log(aqi);
-     
+      var request = new XMLHttpRequest();
+
+      request.open('GET', 'https://us1.locationiq.com/v1/search.php?key=9b3b59a233e9ee&q=' + place + '&format=json', true);
+      request.onload = function() {
+        // Convert JSON data to an object
+        console.log("test");
+        var latlng = JSON.parse(this.response);
+        console.log("hello");
+        var lat = latlng[0].lat;
+        var lng = latlng[0].lng;
+        console.log(lat);
+        console.log(lng);
       }
       request.send();
 
