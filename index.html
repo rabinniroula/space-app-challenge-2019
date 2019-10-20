@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+
+  <!-- Reference to the Bing Maps SDK -->
+  <script type='text/javascript'
+    src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AnsS3zdh-kQirgTAW76jC85GfOqnvO5hUwm1RTy7IGyCLuwAdgoOCe7ik0rHbCGI'
+    async defer></script>
+
+  <script type='text/javascript'>
+    var map = null;
+
+    function GetMap() {
+      // Initialize the map
+      map = new Microsoft.Maps.Map(document.getElementById("myMap"));
+
+      // Add handler for the map click event.
+      Microsoft.Maps.Events.addHandler(map, 'click', displayEventInfo);
+
+
+    }
+
+    function displayEventInfo(e) {
+      if (e.targetType == "map") {
+
+        var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+        var loc = e.target.tryPixelToLocation(point);
+
+        if (loc != null) {
+          console.log("The location " + loc.latitude + ", " + loc.longitude + " was clicked.");
+        }
+      }
+      var request = new XMLHttpRequest();
+      request.open("GET", "https://dev.virtualearth.net/REST/v1/Locations/" + loc.latitude + "," + loc.longitude + "?o=xml&key=AnsS3zdh-kQirgTAW76jC85GfOqnvO5hUwm1RTy7IGyCLuwAdgoOCe7ik0rHbCGI", false);
+      request.send();
+      var xml = request.responseXML;
+      //console.log(xml)
+
+
+      /* var parser = new DOMParser();
+      var xmlDoc = parser.parseFromString(xml,"text/xml"); */
+      var place = xml.getElementsByTagName("Locality")[0].childNodes[0].nodeValue;
+      console.log(place);
+
+      // let request = new XMLHttpRequest();
+      
+      //lat lng data
+      request.open('GET', 'https://api.opencagedata.com/geocode/v1/json?q=" + place + &key=67fed7bfbb4b477a8cac862f176e2bb0', true);
+      request.onload = function () {
+      // Convert JSON data to an object
+      console.log("test");
+      var latlng = JSON.parse(this.response);
+      var lat = latlng['results']['bounds']['northeast']['lat'];
+      console.log(aqi);
+     
+      }
+      request.send();
+
+
+      // aqi
+      request.open('GET', 'https://api.breezometer.com/air-quality/v2/historical/hourly?lat=" + loc.latitude + "&lon=" + loc.longitude + &key=32c717323fa842d6beb92a0252be11b5&datetime=2019-10-17T04:00:00', true);
+      request.onload = function () {
+      // Convert JSON data to an object
+      console.log("test");
+      var res = JSON.parse(this.response);
+      var aqi = res['data']['indexes']['baqi']['aqi'];
+      console.log(aqi);
+     
+      }
+      request.send();
+
+
+
+    }
+
+    GetMap();
+  </script>
+</head>
+
+<body>
+  <div id="myMap" style="position:relative;width:1000px;height:800px;"></div>
+</body>
+
+</html>
